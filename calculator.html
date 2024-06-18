@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .calculator {
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        }
+        .calculator-screen {
+            height: 80px;
+            font-size: 2.5rem;
+            text-align: right;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+        .calculator-keys button {
+            height: 60px;
+            font-size: 1.5rem;
+        }
+        .btn {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="calculator bg-light">
+        <input type="text" class="form-control calculator-screen" id="calculator-screen" disabled>
+        <div class="calculator-keys">
+            <div class="row">
+                <div class="col-3"><button type="button" class="btn btn-secondary btn-block" onclick="appendNumber('7')">7</button></div>
+                <div class="col-3"><button type="button" class="btn btn-secondary btn-block" onclick="appendNumber('8')">8</button></div>
+                <div class="col-3"><button type="button" class="btn btn-secondary btn-block" onclick="appendNumber('9')">9</button></div>
+                <div class="col-3"><button type="button" class="btn btn-info btn-block" onclick="setOperation('/')">/</button></div>
+            </div>
+            <div class="row">
+                <div class="col-3"><button type="button" class="btn btn-secondary btn-block" onclick="appendNumber('4')">4</button></div>
+                <div class="col-3"><button type="button" class="btn btn-secondary btn-block" onclick="appendNumber('5')">5</button></div>
+                <div class="col-3"><button type="button" class="btn btn-secondary btn-block" onclick="appendNumber('6')">6</button></div>
+                <div class="col-3"><button type="button" class="btn btn-info btn-block" onclick="setOperation('*')">*</button></div>
+            </div>
+            <div class="row">
+                <div class="col-3"><button type="button" class="btn btn-secondary btn-block" onclick="appendNumber('1')">1</button></div>
+                <div class="col-3"><button type="button" class="btn btn-secondary btn-block" onclick="appendNumber('2')">2</button></div>
+                <div class="col-3"><button type="button" class="btn btn-secondary btn-block" onclick="appendNumber('3')">3</button></div>
+                <div class="col-3"><button type="button" class="btn btn-info btn-block" onclick="setOperation('-')">-</button></div>
+            </div>
+            <div class="row">
+                <div class="col-3"><button type="button" class="btn btn-secondary btn-block" onclick="appendNumber('0')">0</button></div>
+                <div class="col-3"><button type="button" class="btn btn-secondary btn-block" onclick="appendNumber('.')">.</button></div>
+                <div class="col-3"><button type="button" class="btn btn-primary btn-block" onclick="calculate()">=</button></div>
+                <div class="col-3"><button type="button" class="btn btn-info btn-block" onclick="setOperation('+')">+</button></div>
+            </div>
+            <div class="row">
+                <div class="col-12"><button type="button" class="btn btn-danger btn-block" onclick="clearScreen()">C</button></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script>
+    let currentInput = '';
+    let operation = null;
+    let previousInput = '';
+
+    function appendNumber(number) {
+        currentInput += number;
+        updateScreen();
+    }
+
+    function setOperation(op) {
+        if (currentInput === '') return;
+        if (previousInput !== '') {
+            calculate();
+        }
+        operation = op;
+        previousInput = currentInput;
+        currentInput = '';
+    }
+
+    function calculate() {
+        let result;
+        const prev = parseFloat(previousInput);
+        const current = parseFloat(currentInput);
+        if (isNaN(prev) || isNaN(current)) return;
+        switch (operation) {
+            case '+':
+                result = prev + current;
+                break;
+            case '-':
+                result = prev - current;
+                break;
+            case '*':
+                result = prev * current;
+                break;
+            case '/':
+                result = prev / current;
+                break;
+            default:
+                return;
+        }
+        currentInput = result;
+        operation = null;
+        previousInput = '';
+        updateScreen();
+    }
+
+    function clearScreen() {
+        currentInput = '';
+        operation = null;
+        previousInput = '';
+        updateScreen();
+    }
+
+    function updateScreen() {
+        document.getElementById('calculator-screen').value = currentInput;
+    }
+</script>
+</body>
+</html>
