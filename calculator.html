@@ -7,12 +7,23 @@
     <!-- Bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
     <style>
+        body {
+            background-image: url('https://as1.ftcdn.net/v2/jpg/04/72/09/24/1000_F_472092463_biXCSvYsRVE8S05Ph7LbrxglfDr66MBE.jpg'); /* Adjust the path as needed */
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-position: center;
+            height: 100%;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
         .calculator {
             max-width: 400px;
-            margin: 50px auto;
+            margin: 35px auto;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent background */
         }
         .calculator-screen {
             height: 80px;
@@ -77,8 +88,9 @@
     let previousInput = '';
 
     function appendNumber(number) {
+        if (number === '.' && currentInput.includes('.')) return;
         currentInput += number;
-        updateScreen();
+        updateScreen(currentInput);
     }
 
     function setOperation(op) {
@@ -89,6 +101,7 @@
         operation = op;
         previousInput = currentInput;
         currentInput = '';
+        updateScreen(currentInput);
     }
 
     function calculate() {
@@ -112,21 +125,21 @@
             default:
                 return;
         }
-        currentInput = result;
+        currentInput = result.toString();
         operation = null;
         previousInput = '';
-        updateScreen();
+        updateScreen(currentInput);
     }
 
     function clearScreen() {
         currentInput = '';
         operation = null;
         previousInput = '';
-        updateScreen();
+        updateScreen(currentInput);
     }
 
-    function updateScreen() {
-        document.getElementById('calculator-screen').value = currentInput;
+    function updateScreen(value) {
+        document.getElementById('calculator-screen').value = value;
     }
 </script>
 </body>
